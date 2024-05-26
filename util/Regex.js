@@ -28,8 +28,9 @@ class Regex{
         const unhandledRegex = /Unhandled Exception occurred/
         const categoryIDRegex = /Category ID: \d+ in KYC Table/
         const someThingWentWrong = /Something went wrong/
-        const TechnicalGlitchregex = /There seems to be a technical glitch/;
-        return unhandledRegex.test(data)?true:categoryIDRegex.test(data)?true:someThingWentWrong.test(data)?true:TechnicalGlitchregex.test(data)?true:false;
+        const TechnicalGlitchregex = /There seems to be a technical glitch/
+        const internalServerError = /Internal Server Error/
+        return unhandledRegex.test(data)?true:categoryIDRegex.test(data)?true:someThingWentWrong.test(data)?true:TechnicalGlitchregex.test(data)?true:internalServerError.test(data)?true:false;
     }
 
 }
