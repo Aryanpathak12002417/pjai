@@ -9,6 +9,6 @@ module.exports =(req,res,next)=>{
     }
     catch(err){
         console.log("Unauthorized")
-        res.status(401).json({"msg":err})
+        res.status(401).json({"msg":"Not Authorized.Please use Authorize token"})
     }
 }

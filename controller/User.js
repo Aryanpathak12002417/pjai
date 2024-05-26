@@ -1,31 +1,28 @@
 const router = require('express').Router()
-// const sequelize = require('../util/database.js')
-const Sequelize = require('sequelize')
+const regex =require('../util/Regex')
+const axios = require('axios')
 
 
-router.post('/identify-replace',(req,res)=>{
-    const panRegex = /\b[A-Z]{5}[0-9]{4}[A-Z]{1}\b/g;
-    const aadharRegex = /\b\d{4}\s?\d{4}\s?\d{4}\b/g;
-    const bankAccountRegex = /\b\d{9,18}\b/g;
-    const bankIFSCcodeRegex = /\b[A-Z]{4}0[A-Z0-9]{6}\b/g;
-    const dematRegex = /\b[A-Z0-9]{16}\b/g;
-    const gmailRegex = /\b[A-Za-z0-9._%+-]+@gmail\.com\b/g;
-    const mobileNumberRegex = /\b(?:\+?\d{1,3}[-.\s]?)?\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}\b/g;
-    const {query} =req.body
-    try{
-        let replacedText = query.replace(panRegex, "xxxxxxxxxx")
-        replacedText =replacedText.replace(aadharRegex, "xxxxxxxxxxxx")
-        replacedText =replacedText.replace(dematRegex,"xxxxxxxxxxxxxxxx")
-        replacedText = replacedText.replace(bankAccountRegex,"xxxxxxxxxx") // this will also replace bank account number and aadhar card
-        replacedText =replacedText.replace(bankIFSCcodeRegex,"xxxxxxxxxxx")
-        replacedText =replacedText.replace(gmailRegex,"xxxxxxxxxxx")
-        replacedText =replacedText.replace(mobileNumberRegex,"xxxxxxxxxxx")
-        res.status(200).json({success:true,query:replacedText})
-    }
-    catch(err){
-        console.log(err)
-        res.status(400).json({success:false,msg:"Error while replacing information"})
-    }
+router.post('/resolve-query',(req,res)=>{
+    const {question,description} =  req.body
+    const maskedQuery = regex.replaceSensativeInformation(question)
+    const maskedDescription =regex.replaceSensativeInformation(description)
+    const data = {
+        question: maskedQuery,
+        description: maskedDescription
+      };
+    axios.post(`${process.env.RetoolUrl}startTrigger`,data,{
+        headers:{
+            'Content-Type': 'application/json',
+            'X-Workflow-Api-Key': 'retool_wk_1e75c1f250cc4f0cb29bc0de07887e19'  
+        }
+    }).then((response)=>{
+        res.status(200).json(response.data)
+    })
+    .catch((err)=>{
+        console.log(err);
+        res.status(400).json({"msg":"Error in retool AI workflow"})
+    })
 })
 
 module.exports = router

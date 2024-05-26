@@ -2,10 +2,10 @@ const Tesseract = require('tesseract.js')
 
 class ImageToText{
 
-    async extractTextFromBase64Image(base64ImageData) {
+    async extractTextFromBase64Image(byteData) {
         try {
             const { data } = await Tesseract.recognize(
-                base64ImageData,
+                byteData,
                 'eng',
             )
            return data.text
