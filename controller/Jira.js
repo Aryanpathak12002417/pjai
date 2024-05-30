@@ -16,12 +16,18 @@ router.get('/verify-error',(req,res)=>{
         return response.data.fields.attachment
     })
     .then((response)=>{
-       return response.map((attachment)=>{
+       const attachmentarray=response.map((attachment)=>{
+        if(attachment.mimeType.split('/')[0]=='image'){
             return {
                 id:attachment.id,
                 mimeType:attachment.mimeType
             }
-       }) 
+        }
+       })
+       return attachmentarray.filter((ele)=>{
+        if(ele!=null) return ele;
+       })
+
     })
     .then(async (response)=>{
         const attachmentPromises= response.map(async (ele)=>{

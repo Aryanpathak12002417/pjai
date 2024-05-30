@@ -4,12 +4,13 @@ const axios = require('axios')
 
 
 router.post('/resolve-query',(req,res)=>{
-    const {question,description} =  req.body
+    const {question,description,email_id} =  req.body
     const maskedQuery = regex.replaceSensativeInformation(question)
     const maskedDescription =regex.replaceSensativeInformation(description)
     const data = {
         question: maskedQuery,
-        description: maskedDescription
+        description: maskedDescription,
+        email_id
       };
     axios.post(`${process.env.RetoolUrl}startTrigger`,data,{
         headers:{
