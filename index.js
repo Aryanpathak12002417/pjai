@@ -15,6 +15,10 @@ app.use('/user',auth,userController)
 app.use('/image',auth,imageController)
 app.use('/jira',auth,jiraController)
 
+app.get('/',(req,res)=>{
+    res.status(200).send('hi')
+})
+
 app.listen(process.env.PORT,(()=>{
     console.log(`The server is up and running at port ${process.env.PORT}`)
 }))
