@@ -14,8 +14,10 @@ router.post('/resolve-query',(req,res)=>{
       };
     axios.post(`${process.env.RetoolUrl}startTrigger`,data,{
         headers:{
-            'Content-Type': 'application/json',
-            'X-Workflow-Api-Key': 'retool_wk_1e75c1f250cc4f0cb29bc0de07887e19'  
+            'Content-Type': 'application/json'
+        },
+        params:{
+            'workflowApiKey':process.env.RetoolAuth
         }
     }).then((response)=>{
         res.status(200).json(response.data)
