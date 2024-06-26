@@ -15,7 +15,14 @@ router.post('/check-error',async (req,res)=>{
             }
         }
         if(flag){
-            res.status(200).json({sucess:true,msg:"Raise to product. The image contains error"})
+            res.status(200).json(
+                {
+                    sucess:true,msg:"Error on website is found. Raising issue to product team.Thankyou",
+                    jiraCutomerCategory:"Error on Website",
+                    jiraIssueSubCategory:"General Issues",
+                    jiraIssueCategory:"Grip Invest"
+
+            })
         }
         else{
             res.status(200).json({sucess:false,msg:"Image doesn't contain any errors."})
